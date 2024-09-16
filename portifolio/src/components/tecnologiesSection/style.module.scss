@@ -1,0 +1,20 @@
+.flex{
+    padding-top: 2rem;
+    height: 20rem;
+}
+
+.title{
+    display: flex;
+    align-items: center;
+    font-family: "Lexend", sans-serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1.875rem;
+    color: var(--gray-one);
+}
+.container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 3rem;
+}

@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@100..900&display=swap');
+
+.heading1{
+    font-family: "Lexend", sans-serif;
+    font-weight: 700;
+    font-size: 2.75rem;
+    line-height: 3.5rem;
+    color: #FFFFFF;
+}
+
+.heading2{
+    font-family: "Lexend", sans-serif;
+    font-weight: 600;
+    font-size: 1.75rem;
+    line-height: 2.1875rem;
+    color: #FFFFFF;
+}
+
+.heading3{
+    font-family: "Lexend", sans-serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1.875rem;
+    color: #FFFFFF;
+}
+
+.heading4{
+    font-family: "Lexend", sans-serif;
+    font-weight: 600;
+    font-size: 1.75rem;
+    line-height: 1.5625rem;
+    color: var(--gray-one);
+}
+
+.body1{
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.75rem;
+    color: var(--gray-three);
+}
+
+.body2{
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.75rem;
+    color: var(--gray-two);
+    margin-top: 1rem;
+}
+
+.body3{
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    color: var(--brand-one);
+    margin:  0rem 0.5rem;
+}
+
+.body4{
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    color: var(--gray-one);
+}
+
+.buttonText{
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--gray-one);
+    text-decoration: none;
+}
