@@ -11,13 +11,13 @@ export function HeaderPortifolio(){
                             <p>Lucas Silva</p>
                         </div>
                         <div className={style.containerCards}>
-                            <a className="button2 buttonText" href="https://wa.me/37998400374?text=">Falar no whatswapp</a>
                             <a className={style.cards} href="https://www.linkedin.com/in/lucas-silva-ab27a326b/">
                                 <FaLinkedinIn size={20} color="black"/>
                             </a>
                             <a className={style.cards} href="https://github.com/lucas429a"> 
                                 <FaGithub size={20} color="black"/>
                             </a>
+                            <a className="button2 buttonText" href="https://wa.me/37998400374?text=">Falar no whatswapp</a>
                         </div>
                     </div>
             </div>
