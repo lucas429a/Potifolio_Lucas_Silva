@@ -12,33 +12,36 @@ export function Header() {
 
   const navLinks = [
     { href: "#about", label: t.header.about },
+    { href: "#video", label: t.header.video },
+    { href: "#projects", label: t.header.projects },
     { href: "#technologies", label: t.header.technologies },
     { href: "#architecture", label: t.header.architecture },
-    { href: "#projects", label: t.header.projects },
-    { href: "#filesmanager", label: t.header.fileManager },
+    { href: "#cases", label: t.header.cases },
   ];
 
+  const iconBtn = "w-10 h-10 flex items-center justify-center rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 dark:hover:bg-white dark:hover:text-neutral-900 dark:hover:border-white transition-all duration-300";
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-sm transition-colors duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-neutral-950/90 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo/Name */}
-          <a href="#" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-linear-to-br from-brand-primary to-brand-secondary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">LS</span>
+          <a href="#about" className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-neutral-900 dark:bg-white rounded-lg flex items-center justify-center">
+              <span className="text-white dark:text-neutral-900 font-bold text-lg">LS</span>
             </div>
-            <span className="font-lexend font-bold text-xl text-gray-dark dark:text-white hidden sm:block">
+            <span className="font-lexend font-bold text-xl text-neutral-900 dark:text-white hidden sm:block tracking-tight">
               Lucas Silva
             </span>
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-7">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-gray-medium dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors duration-300 font-medium"
+                className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors duration-300 font-medium"
               >
                 {link.label}
               </a>
@@ -46,48 +49,27 @@ export function Header() {
           </nav>
 
           {/* Social Links & CTA */}
-          <div className="hidden md:flex items-center space-x-4">
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-brand-primary hover:text-white dark:hover:bg-brand-primary text-gray-medium dark:text-gray-300 transition-all duration-300"
-              aria-label="Toggle theme"
-            >
-              {theme === 'light' ? <FaMoon size={18} /> : <FaSun size={18} />}
+          <div className="hidden lg:flex items-center space-x-3">
+            <button onClick={toggleTheme} className={iconBtn} aria-label="Toggle theme">
+              {theme === 'light' ? <FaMoon size={16} /> : <FaSun size={16} />}
             </button>
-            
-            {/* Language Toggle */}
+
             <button
               onClick={toggleLanguage}
-              className="px-3 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-brand-primary hover:text-white dark:hover:bg-brand-primary text-gray-medium dark:text-gray-300 transition-all duration-300 font-medium text-sm"
+              className="px-3 h-10 flex items-center justify-center rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-900 transition-all duration-300 font-semibold text-xs"
               aria-label="Toggle language"
             >
               {language === 'pt' ? 'EN' : 'PT'}
             </button>
 
-            <a
-              href="https://www.linkedin.com/in/lucas-silva-ab27a326b/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-brand-primary hover:text-white text-gray-medium dark:text-gray-300 transition-all duration-300"
-            >
-              <FaLinkedinIn size={18} />
+            <a href="https://www.linkedin.com/in/lucas-silva-ab27a326b/" target="_blank" rel="noopener noreferrer" className={iconBtn}>
+              <FaLinkedinIn size={16} />
             </a>
-            <a
-              href="https://github.com/lucas429a"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-brand-primary hover:text-white text-gray-medium dark:text-gray-300 transition-all duration-300"
-            >
-              <FaGithub size={18} />
+            <a href="https://github.com/lucas429a" target="_blank" rel="noopener noreferrer" className={iconBtn}>
+              <FaGithub size={16} />
             </a>
-            <a
-              href="https://wa.me/37998400374"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary flex items-center space-x-2"
-            >
-              <FaWhatsapp size={18} />
+            <a href="https://wa.me/37998400374" target="_blank" rel="noopener noreferrer" className="btn-primary py-2.5! px-5! text-sm">
+              <FaWhatsapp size={16} />
               <span>{t.header.contact}</span>
             </a>
           </div>
@@ -95,7 +77,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-medium dark:text-gray-300"
+            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300"
           >
             {isMenuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
           </button>
@@ -103,59 +85,36 @@ export function Header() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-100 dark:border-gray-800 animate-fade-in">
+          <div className="lg:hidden py-4 border-t border-neutral-200 dark:border-neutral-800 animate-fade-in">
             <nav className="flex flex-col space-y-4">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-gray-medium dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors duration-300 font-medium py-2"
+                  className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors duration-300 font-medium py-2"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="flex items-center space-x-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-                {/* Theme Toggle Mobile */}
-                <button
-                  onClick={toggleTheme}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-brand-primary hover:text-white text-gray-medium dark:text-gray-300 transition-all duration-300"
-                >
-                  {theme === 'light' ? <FaMoon size={18} /> : <FaSun size={18} />}
+              <div className="flex items-center space-x-3 pt-4 border-t border-neutral-200 dark:border-neutral-800">
+                <button onClick={toggleTheme} className={iconBtn}>
+                  {theme === 'light' ? <FaMoon size={16} /> : <FaSun size={16} />}
                 </button>
-                
-                {/* Language Toggle Mobile */}
                 <button
                   onClick={toggleLanguage}
-                  className="px-3 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-brand-primary hover:text-white text-gray-medium dark:text-gray-300 transition-all duration-300 font-medium text-sm"
+                  className="px-3 h-10 flex items-center justify-center rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 font-semibold text-xs"
                 >
                   {language === 'pt' ? 'EN' : 'PT'}
                 </button>
-
-                <a
-                  href="https://www.linkedin.com/in/lucas-silva-ab27a326b/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-brand-primary hover:text-white text-gray-medium dark:text-gray-300 transition-all duration-300"
-                >
-                  <FaLinkedinIn size={18} />
+                <a href="https://www.linkedin.com/in/lucas-silva-ab27a326b/" target="_blank" rel="noopener noreferrer" className={iconBtn}>
+                  <FaLinkedinIn size={16} />
                 </a>
-                <a
-                  href="https://github.com/lucas429a"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-brand-primary hover:text-white text-gray-medium dark:text-gray-300 transition-all duration-300"
-                >
-                  <FaGithub size={18} />
+                <a href="https://github.com/lucas429a" target="_blank" rel="noopener noreferrer" className={iconBtn}>
+                  <FaGithub size={16} />
                 </a>
-                <a
-                  href="https://wa.me/37998400374"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary flex items-center space-x-2"
-                >
-                  <FaWhatsapp size={18} />
-                  <span>{t.header.contact}</span>
+                <a href="https://wa.me/37998400374" target="_blank" rel="noopener noreferrer" className="btn-primary py-2.5! px-4! text-sm">
+                  <FaWhatsapp size={16} />
                 </a>
               </div>
             </nav>

@@ -1,117 +1,98 @@
-import { 
-  FaReact, FaNode, FaPython, 
-  FaDatabase, FaDocker 
-} from "react-icons/fa";
-import { 
-  SiTypescript, SiJavascript, SiPrisma, 
-  SiRedis, SiMui, SiDjango, 
-  SiExpress, SiSwiper, SiHtml5, SiCss3
-} from "react-icons/si";
-import { BiLogoPostgresql } from "react-icons/bi";
-import { useLanguage } from "../../contexts/LanguageContext";
-import { useTranslation } from "../../translations";
+import { useLanguage } from '../../contexts/LanguageContext';
+import { useTranslation } from '../../translations';
+
+const techCategories = [
+  {
+    key: 'frontend',
+    items: [
+      { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
+      { name: 'Next.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg' },
+      { name: 'TypeScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
+      { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
+      { name: 'TailwindCSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg' },
+      { name: 'HTML5', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
+      { name: 'CSS3', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
+    ]
+  },
+  {
+    key: 'backend',
+    items: [
+      { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
+      { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
+      { name: 'Django', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg' },
+      { name: 'Fastify', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastify/fastify-original.svg' },
+      { name: 'Express', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg' },
+    ]
+  },
+  {
+    key: 'database',
+    items: [
+      { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
+      { name: 'Prisma', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg' },
+      { name: 'SQLite', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg' },
+    ]
+  },
+  {
+    key: 'tools',
+    items: [
+      { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
+      { name: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg' },
+      { name: 'Vitest', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitest/vitest-original.svg' },
+      { name: 'Zod', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/zod/zod-original.svg' },
+    ]
+  }
+];
 
 export function Technologies() {
   const { language } = useLanguage();
   const t = useTranslation(language);
-  const frontendTech = [
-    { name: "React", icon: FaReact, color: "#61DAFB" },
-    { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
-    { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
-    { name: "HTML5", icon: SiHtml5, color: "#E34F26" },
-    { name: "CSS3", icon: SiCss3, color: "#1572B6" },
-    { name: "MUI/Material", icon: SiMui, color: "#007FFF" },
-    { name: "Swiper", icon: SiSwiper, color: "#6332F6" },
-    { name: "Emotion", icon: FaReact, color: "#D36AC2" },
-  ];
-
-  const backendTech = [
-    { name: "Node.js", icon: FaNode, color: "#339933" },
-    { name: "Express", icon: SiExpress, color: "#000000" },
-    { name: "Python", icon: FaPython, color: "#3776AB" },
-    { name: "Django", icon: SiDjango, color: "#092E20" },
-    { name: "Prisma", icon: SiPrisma, color: "#2D3748" },
-    { name: "TypeORM", icon: FaDatabase, color: "#FE0902" },
-    { name: "Multer", icon: FaNode, color: "#339933" },
-    { name: "CORS", icon: FaNode, color: "#339933" },
-  ];
-
-  const databaseTech = [
-    { name: "PostgreSQL", icon: BiLogoPostgresql, color: "#4169E1" },
-    { name: "Redis", icon: SiRedis, color: "#DC382D" },
-    { name: "Prisma", icon: SiPrisma, color: "#2D3748" },
-  ];
-
-  const toolsTech = [
-    { name: "Docker", icon: FaDocker, color: "#2496ED" },
-    { name: "Day.js", icon: SiJavascript, color: "#FB6052" },
-    { name: "Nivo Charts", icon: FaReact, color: "#F47560" },
-    { name: "PDFme", icon: FaReact, color: "#FF6B6B" },
-    { name: "Patch-Package", icon: FaNode, color: "#339933" },
-  ];
-
-  const TechCard = ({ tech }) => {
-    const Icon = tech.icon;
-    return (
-      <div className="tech-badge group cursor-pointer dark:bg-gray-800 dark:border-gray-700">
-        <Icon 
-          size={40} 
-          style={{ color: tech.color }} 
-          className="mb-3 group-hover:scale-110 transition-transform duration-300"
-        />
-        <span className="text-sm font-medium text-gray-dark dark:text-gray-200 text-center">
-          {tech.name}
-        </span>
-      </div>
-    );
-  };
-
-  const TechSection = ({ title, techs, delay = 0 }) => (
-    <div className="space-y-4" style={{ animationDelay: `${delay}ms` }}>
-      <h3 className="text-lg font-semibold text-gray-dark dark:text-white border-l-4 border-brand-primary pl-4">
-        {title}
-      </h3>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {techs.map((tech) => (
-          <TechCard key={tech.name} tech={tech} />
-        ))}
-      </div>
-    </div>
-  );
 
   return (
-    <section id="technologies" className="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <section id="technologies" className="py-20 md:py-28 bg-white dark:bg-neutral-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16 animate-fade-in">
-          <span className="inline-block px-4 py-2 bg-brand-primary/10 rounded-full text-brand-primary font-medium text-sm mb-4">
-            {t.technologies.badge}
-          </span>
-          <h2 className="section-title dark:text-white">
-            {t.technologies.title} <span className="gradient-text">{t.technologies.titleHighlight}</span>
+        <div className="text-center mb-16" data-reveal>
+          <span className="section-tag">{t.technologies.tag}</span>
+          <h2 className="section-title">
+            {t.technologies.title}{" "}
+            <span className="underline decoration-4 underline-offset-8">{t.technologies.titleHighlight}</span>
           </h2>
-          <p className="section-subtitle dark:text-gray-300 max-w-2xl mx-auto">
-            {t.technologies.subtitle}
-          </p>
+          <p className="section-subtitle mx-auto">{t.technologies.subtitle}</p>
         </div>
 
-        {/* Tech Grid */}
         <div className="space-y-12">
-          <TechSection title={t.technologies.frontend} techs={frontendTech} delay={0} />
-          <TechSection title={t.technologies.backend} techs={backendTech} delay={100} />
-          <TechSection title={t.technologies.database} techs={databaseTech} delay={200} />
-          <TechSection title={t.technologies.tools} techs={toolsTech} delay={300} />
+          {techCategories.map((category, catIndex) => (
+            <div key={category.key} data-reveal data-reveal-delay={catIndex * 100}>
+              <h3 className="text-lg font-bold font-lexend text-neutral-900 dark:text-white mb-6 flex items-center gap-3">
+                <span className="w-8 h-px bg-neutral-900 dark:bg-white" />
+                {t.technologies[category.key]}
+              </h3>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4">
+                {category.items.map((tech, techIndex) => (
+                  <div
+                    key={tech.name}
+                    className="flex flex-col items-center justify-center p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-900 dark:hover:border-white hover:-translate-y-1 transition-all duration-300"
+                    data-reveal="zoom"
+                    data-reveal-delay={techIndex * 50}
+                  >
+                    <img
+                      src={tech.icon}
+                      alt={tech.name}
+                      className="w-10 h-10 tech-icon"
+                      loading="lazy"
+                    />
+                    <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400 mt-3 text-center">
+                      {tech.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Learning note */}
-        <div className="mt-16 text-center">
-          <div className="inline-flex items-center px-6 py-3 bg-white dark:bg-gray-800 rounded-full shadow-md">
-            <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse" />
-            <span className="text-gray-medium dark:text-gray-300">
-              {t.technologies.learning}
-            </span>
-          </div>
-        </div>
+        <p className="text-center text-sm text-neutral-500 dark:text-neutral-400 mt-12 italic" data-reveal>
+          {t.technologies.learning}
+        </p>
       </div>
     </section>
   );

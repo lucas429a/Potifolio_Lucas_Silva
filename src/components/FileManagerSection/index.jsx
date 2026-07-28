@@ -1,392 +1,252 @@
 import { useState } from 'react';
-import { 
-  FaFileUpload, FaFilePdf, FaDatabase,
-  FaHardHat, FaCode, FaServer, FaLayerGroup,
-  FaCheckCircle, FaCogs, FaGithub
-} from "react-icons/fa";
-import { 
-  SiPrisma, SiTypescript 
-} from "react-icons/si";
-import { useLanguage } from "../../contexts/LanguageContext";
-import { useTranslation } from "../../translations";
+import { FaCheckCircle, FaFileCsv, FaFileCode, FaTag, FaArrowRight, FaGithub } from "react-icons/fa";
+import { useLanguage } from '../../contexts/LanguageContext';
+import { useTranslation } from '../../translations';
+
+const endpoints = [
+  { method: 'POST', path: '/:company/upload', desc: 'upload' },
+  { method: 'POST', path: '/pdf/generate', desc: 'pdf' },
+];
+
+const stats = [
+  { value: '4+', key: 'companies' },
+  { value: '25+', key: 'generators' },
+  { value: '10+', key: 'patterns' },
+  { value: '50+', key: 'fields' },
+];
 
 export function FileManagerSection() {
-  const [activeTab, setActiveTab] = useState('overview');
   const { language } = useLanguage();
   const t = useTranslation(language);
+  const [activeTab, setActiveTab] = useState('overview');
 
-  const tabs = [
-    { id: 'overview', label: t.fileManager.tabs.overview, icon: FaLayerGroup },
-    { id: 'upload', label: t.fileManager.tabs.upload, icon: FaFileUpload },
-    { id: 'pdf', label: t.fileManager.tabs.pdf, icon: FaFilePdf },
-    { id: 'future', label: t.fileManager.tabs.future, icon: FaHardHat, isWip: true },
-  ];
+  const tabs = ['overview', 'upload', 'pdf'];
 
-  const endpoints = [
-    {
-      id: 'upload',
-      method: 'POST',
-      path: '/api/upload',
-      description: 'Processa arquivos CSV/XML/ZPL',
-      features: ['Multi-empresa', 'Merge inteligente', 'Validação'],
-    },
-    {
-      id: 'pdf-generate',
-      method: 'POST',
-      path: '/api/pdf/generate',
-      description: 'Gera PDFs de etiquetas',
-      features: ['25+ templates', 'QR Code', 'Barcode'],
-    },
-    {
-      id: 'tags-get',
-      method: 'GET',
-      path: '/api/tags',
-      description: 'Lista etiquetas com filtros',
-      features: ['Filtros dinâmicos', 'Paginação', 'Cache'],
-    },
-    {
-      id: 'tags-delete',
-      method: 'DELETE',
-      path: '/api/tags',
-      description: 'Remove etiquetas',
-      features: ['Soft delete', 'Histórico', 'Rollback'],
-    },
-    {
-      id: 'companies',
-      method: 'GET/POST',
-      path: '/api/companies',
-      description: 'Gerencia empresas',
-      features: ['CRUD completo', 'Validações', 'Relacionamentos'],
-    },
-  ];
+  return (
+    <section id="filesmanager" className="py-20 md:py-28 bg-white dark:bg-neutral-950 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12" data-reveal>
+          <span className="section-tag">{t.fileManager.badge}</span>
+          <h2 className="section-title">
+            {t.fileManager.title}{" "}
+            <span className="underline decoration-4 underline-offset-8">{t.fileManager.titleHighlight}</span>
+          </h2>
+          <p className="section-subtitle mx-auto">{t.fileManager.subtitle}</p>
+        </div>
 
-  const patterns = [
-    { name: 'Factory Pattern', desc: 'Processadores e conversores', icon: FaCogs },
-    { name: 'Strategy Pattern', desc: 'Estratégias por empresa', icon: FaCode },
-    { name: 'Repository Pattern', desc: 'Abstração de persistência', icon: FaDatabase },
-    { name: 'Use Case Pattern', desc: 'Lógica de negócio isolada', icon: FaLayerGroup },
-  ];
+        {/* Tabs */}
+        <div className="flex justify-center gap-2 mb-12 flex-wrap" data-reveal>
+          {tabs.map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
+                activeTab === tab
+                  ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900'
+                  : 'border border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:border-neutral-900 dark:hover:border-white'
+              }`}
+            >
+              {t.fileManager.tabs[tab]}
+            </button>
+          ))}
+        </div>
 
-  const techStack = [
-    { name: 'TypeScript', icon: SiTypescript },
-    { name: 'Node.js', icon: FaServer },
-    { name: 'Prisma', icon: SiPrisma },
-    { name: 'PDFme', icon: FaFilePdf },
-  ];
-
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'overview':
-        return (
-          <div className="space-y-8 animate-fade-in">
-            {/* Project description */}
-            <div className="bg-linear-to-r from-brand-primary/5 to-brand-secondary/5 dark:from-brand-primary/10 dark:to-brand-secondary/10 rounded-2xl p-8 border border-brand-primary/10 dark:border-brand-primary/20">
-              <h3 className="text-2xl font-bold text-gray-dark dark:text-white mb-4">
+        {/* Overview Tab */}
+        {activeTab === 'overview' && (
+          <div className="animate-fade-in space-y-12">
+            <div className="text-center max-w-3xl mx-auto" data-reveal>
+              <h3 className="text-2xl font-bold font-lexend text-neutral-900 dark:text-white mb-4">
                 {t.fileManager.overview.title}
               </h3>
-              <p className="text-gray-medium dark:text-gray-300 leading-relaxed mb-6">
+              <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
                 {t.fileManager.overview.description}
               </p>
-              <div className="flex flex-wrap gap-4">
-                {techStack.map((tech) => {
-                  const Icon = tech.icon;
-                  return (
-                    <div key={tech.name} className="flex items-center space-x-2 bg-white dark:bg-gray-700 px-4 py-2 rounded-lg shadow-sm">
-                      <Icon size={20} className="text-brand-primary" />
-                      <span className="font-medium text-gray-dark dark:text-white">{tech.name}</span>
-                    </div>
-                  );
-                })}
-              </div>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { value: '13', label: t.fileManager.overview.companies, sublabel: t.fileManager.overview.companiesLabel },
-                { value: '25+', label: t.fileManager.overview.generators, sublabel: t.fileManager.overview.generatorsLabel },
-                { value: '20+', label: t.fileManager.overview.patterns, sublabel: t.fileManager.overview.patternsLabel },
-                { value: '25k+', label: t.fileManager.overview.fields, sublabel: t.fileManager.overview.fieldsLabel },
-              ].map((stat) => (
-                <div key={stat.label} className="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-md text-center">
-                  <div className="text-3xl font-bold gradient-text">{stat.value}</div>
-                  <div className="text-gray-dark dark:text-white font-medium">{stat.label}</div>
-                  <div className="text-sm text-gray-medium dark:text-gray-400">{stat.sublabel}</div>
+              {stats.map((stat, i) => (
+                <div
+                  key={stat.key}
+                  className="text-center p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800"
+                  data-reveal="zoom"
+                  data-reveal-delay={i * 80}
+                >
+                  <div className="text-4xl font-bold font-lexend text-neutral-900 dark:text-white">{stat.value}</div>
+                  <div className="text-sm font-semibold text-neutral-900 dark:text-white mt-2">
+                    {t.fileManager.overview[stat.key]}
+                  </div>
+                  <div className="text-xs text-neutral-500 dark:text-neutral-400">
+                    {t.fileManager.overview[`${stat.key}Label`]}
+                  </div>
                 </div>
               ))}
             </div>
 
-            {/* Design Patterns */}
-            <div>
-              <h4 className="text-lg font-semibold text-gray-dark dark:text-white mb-4">
+            {/* Design patterns */}
+            <div data-reveal>
+              <h4 className="text-lg font-bold font-lexend text-neutral-900 dark:text-white mb-6 text-center">
                 {t.fileManager.overview.designPatterns}
               </h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {patterns.map((pattern) => {
-                  const Icon = pattern.icon;
-                  return (
-                    <div key={pattern.name} className="bg-white dark:bg-gray-700 rounded-xl p-4 shadow-md border border-gray-100 dark:border-gray-600 hover:border-brand-primary transition-colors">
-                      <Icon size={24} className="text-brand-primary mb-2" />
-                      <div className="font-medium text-gray-dark dark:text-white text-sm">{pattern.name}</div>
-                      <div className="text-xs text-gray-medium dark:text-gray-400 mt-1">{pattern.desc}</div>
-                    </div>
-                  );
-                })}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
+                  <h5 className="font-bold text-neutral-900 dark:text-white">{t.fileManager.overview.cleanArchitecture}</h5>
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1 mb-4">{t.fileManager.overview.cleanArchitectureDesc}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {['layer1', 'layer2', 'layer3', 'layer4'].map(layer => (
+                      <span key={layer} className="text-xs font-semibold px-3 py-1.5 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-900">
+                        {t.fileManager.overview[layer]}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
+                  <h5 className="font-bold text-neutral-900 dark:text-white">{t.fileManager.overview.solidPrinciples}</h5>
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1 mb-4">{t.fileManager.overview.solidPrinciplesDesc}</p>
+                  <ul className="space-y-2">
+                    {['srp', 'ocp', 'lsp', 'isp', 'dip'].map(principle => (
+                      <li key={principle} className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300">
+                        <FaCheckCircle className="text-neutral-900 dark:text-white shrink-0" size={12} />
+                        <span>{t.fileManager.overview[principle]}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-        );
+        )}
 
-      case 'upload':
-        return (
-          <div className="space-y-6 animate-fade-in">
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-brand-primary">
-              <h3 className="text-xl font-bold text-gray-dark mb-4 flex items-center">
-                <FaFileUpload className="mr-3 text-brand-primary" />
+        {/* Upload Tab */}
+        {activeTab === 'upload' && (
+          <div className="animate-fade-in space-y-12">
+            <div className="text-center max-w-3xl mx-auto" data-reveal>
+              <h3 className="text-2xl font-bold font-lexend text-neutral-900 dark:text-white mb-4">
                 {t.fileManager.upload.title}
               </h3>
-              <p className="text-gray-medium mb-6">
+              <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
                 {t.fileManager.upload.description}
               </p>
-              
-              {/* Flow diagram */}
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-6 overflow-x-auto">
-                <pre className="text-sm text-gray-dark dark:text-gray-200 whitespace-pre-wrap">
-{`Cliente → Middleware Upload → UploadController 
-  → ProcessTagFile UseCase 
-    → FileProcessorFactory (seleciona processor)
-      → FileProcessor específico da empresa
-        → FileDetector (identifica tipos)
-        → ConverterFactory (seleciona conversores)
-          → Converters específicos (parse)
-        → Merge de dados (se aplicável)
-        → TagDataService (persistência)
-      → CompanyRulesService (validação)
-  → Resposta JSON + Cleanup`}
-                </pre>
-              </div>
+            </div>
 
-              {/* Features */}
-              <div className="grid md:grid-cols-2 gap-4">
-                {t.fileManager.upload.features.map((feature) => (
-                  <div key={feature} className="flex items-center space-x-2">
-                    <FaCheckCircle className="text-green-500 shrink-0" />
-                    <span className="text-gray-dark dark:text-gray-200">{feature}</span>
+            {/* Flow */}
+            <div data-reveal>
+              <h4 className="text-lg font-bold font-lexend text-neutral-900 dark:text-white mb-6 text-center">
+                {t.fileManager.upload.flow}
+              </h4>
+              <div className="flex items-center justify-center gap-3 flex-wrap">
+                {['step1', 'step2', 'step3', 'step4'].map((step, i, arr) => (
+                  <div key={step} className="flex items-center gap-3">
+                    <div className="px-5 py-3 rounded-full border-2 border-neutral-900 dark:border-white font-semibold text-sm text-neutral-900 dark:text-white">
+                      {t.fileManager.upload[step]}
+                    </div>
+                    {i < arr.length - 1 && <FaArrowRight className="text-neutral-400" size={14} />}
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Code example */}
-            <div className="bg-gray-900 rounded-xl p-6 text-white">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-sm text-gray-400">POST /api/upload</span>
-                <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">200 OK</span>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800" data-reveal="left">
+                <ul className="space-y-3">
+                  {t.fileManager.upload.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3 text-neutral-700 dark:text-neutral-300">
+                      <FaCheckCircle className="text-neutral-900 dark:text-white shrink-0 mt-1" size={14} />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <pre className="text-sm overflow-x-auto">
-{`{
-  "success": true,
-  "message": "Arquivos processados com sucesso",
-  "orderNumber": "123456",
-  "tagCount": 150,
-  "tagTypes": ["corrugado", "frontbox", "palmilha"]
-}`}
-              </pre>
+              <div className="space-y-4" data-reveal="right">
+                <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800">
+                  <h5 className="font-bold text-neutral-900 dark:text-white mb-3">{t.fileManager.upload.formats}</h5>
+                  <div className="flex gap-3">
+                    <FaFileCsv size={28} className="text-neutral-900 dark:text-white" />
+                    <FaFileCode size={28} className="text-neutral-900 dark:text-white" />
+                    <FaTag size={28} className="text-neutral-900 dark:text-white" />
+                  </div>
+                  <div className="flex gap-2 mt-3">
+                    {['CSV', 'XML', 'ZPL'].map(f => (
+                      <span key={f} className="text-xs font-semibold px-2.5 py-1 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-900">{f}</span>
+                    ))}
+                  </div>
+                </div>
+                <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800">
+                  <h5 className="font-bold text-neutral-900 dark:text-white mb-3">{t.fileManager.upload.tech}</h5>
+                  <div className="flex flex-wrap gap-2">
+                    {['TypeScript', 'Fastify', 'Prisma', 'Zod', 'Vitest'].map(tech => (
+                      <span key={tech} className="text-xs font-semibold px-2.5 py-1 rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400">{tech}</span>
+                    ))}
+                  </div>
+                </div>
+                <a href="https://github.com/lucas429a" target="_blank" rel="noopener noreferrer" className="btn-primary w-full justify-center text-sm">
+                  <FaGithub size={16} />
+                  <span>{t.fileManager.upload.viewRepository}</span>
+                </a>
+              </div>
             </div>
           </div>
-        );
+        )}
 
-      case 'pdf':
-        return (
-          <div className="space-y-6 animate-fade-in">
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-brand-secondary">
-              <h3 className="text-xl font-bold text-gray-dark mb-4 flex items-center">
-                <FaFilePdf className="mr-3 text-brand-secondary" />
+        {/* PDF Tab */}
+        {activeTab === 'pdf' && (
+          <div className="animate-fade-in space-y-12">
+            <div className="text-center max-w-3xl mx-auto" data-reveal>
+              <h3 className="text-2xl font-bold font-lexend text-neutral-900 dark:text-white mb-4">
                 {t.fileManager.pdf.title}
               </h3>
-              <p className="text-gray-medium mb-6">
+              <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
                 {t.fileManager.pdf.description}
               </p>
-
-              {/* Modes */}
-              <div className="grid md:grid-cols-3 gap-4 mb-6">
-                {[
-                  t.fileManager.pdf.modes.single,
-                  t.fileManager.pdf.modes.batch,
-                  t.fileManager.pdf.modes.custom,
-                ].map((item) => (
-                  <div key={item.mode} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-center">
-                    <div className="font-semibold text-brand-primary">{item.mode}</div>
-                    <div className="text-sm text-gray-medium dark:text-gray-400 mt-1">{item.desc}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Features */}
-              <div className="grid md:grid-cols-2 gap-4">
-                {t.fileManager.pdf.features.map((feature) => (
-                  <div key={feature} className="flex items-center space-x-2">
-                    <FaCheckCircle className="text-green-500 shrink-0" />
-                    <span className="text-gray-dark dark:text-gray-200">{feature}</span>
-                  </div>
-                ))}
-              </div>
             </div>
 
-            {/* Request example */}
-            <div className="bg-gray-900 rounded-xl p-6 text-white">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-sm text-gray-400">POST /api/pdf/generate</span>
-                <span className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded">PDF Buffer</span>
-              </div>
-              <pre className="text-sm overflow-x-auto">
-{`{
-  "companyCode": 1758846,
-  "tipoEtiqueta": "corrugado",
-  "orderNumber": "123456",
-  "sizesWithQuantities": [
-    { "id": "uuid-1", "quantity": 50 },
-    { "id": "uuid-2", "quantity": 100 }
-  ]
-}`}
-              </pre>
-            </div>
-          </div>
-        );
-
-      case 'future':
-        return (
-          <div className="space-y-6 animate-fade-in">
-            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-8 text-center">
-              <FaHardHat size={48} className="text-yellow-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-dark mb-2">
-                Em Construção
-              </h3>
-              <p className="text-gray-medium max-w-md mx-auto">
-                Novas funcionalidades e integrações estão sendo desenvolvidas. 
-                Em breve mais opções estarão disponíveis aqui.
-              </p>
-            </div>
-
-            {/* Upcoming features */}
-            <div className="grid md:grid-cols-2 gap-4">
-              {[
-                { title: 'Dashboard Analytics', desc: 'Métricas e visualizações com Nivo' },
-                { title: 'Cache com Redis', desc: 'Performance otimizada' },
-                { title: 'Autenticação JWT', desc: 'Segurança avançada' },
-                { title: 'Webhook Integration', desc: 'Notificações em tempo real' },
-              ].map((item) => (
-                <div key={item.title} className="bg-white rounded-xl p-6 shadow-md border border-dashed border-gray-300 opacity-60">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <FaHardHat className="text-yellow-500" />
-                    <span className="font-semibold text-gray-dark">{item.title}</span>
-                  </div>
-                  <p className="text-sm text-gray-medium">{item.desc}</p>
+            {/* Modes */}
+            <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto" data-reveal>
+              {['single', 'batch', 'custom'].map((mode, i) => (
+                <div key={mode} className="text-center p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800" data-reveal="zoom" data-reveal-delay={i * 80}>
+                  <div className="font-bold font-lexend text-neutral-900 dark:text-white">{t.fileManager.pdf.modes[mode].mode}</div>
+                  <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">{t.fileManager.pdf.modes[mode].desc}</div>
                 </div>
               ))}
             </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800" data-reveal="left">
+                <ul className="space-y-3">
+                  {t.fileManager.pdf.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3 text-neutral-700 dark:text-neutral-300">
+                      <FaCheckCircle className="text-neutral-900 dark:text-white shrink-0 mt-1" size={14} />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="grid grid-cols-2 gap-4" data-reveal="right">
+                {['fonts', 'barcodes', 'positioning', 'performance'].map(feature => (
+                  <div key={feature} className="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
+                    <h5 className="font-bold text-sm text-neutral-900 dark:text-white">{t.fileManager.pdf[feature]}</h5>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">{t.fileManager.pdf[`${feature}Desc`]}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        );
+        )}
 
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <section id="filesmanager" className="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-12 animate-fade-in">
-          <span className="inline-block px-4 py-2 bg-brand-primary/10 rounded-full text-brand-primary font-medium text-sm mb-4">
-            {t.fileManager.badge}
-          </span>
-          <h2 className="section-title dark:text-white">
-            {t.fileManager.title} <span className="gradient-text">{t.fileManager.titleHighlight}</span>
-          </h2>
-          <p className="section-subtitle dark:text-gray-300 max-w-2xl mx-auto">
-            {t.fileManager.subtitle}
-          </p>
-          <a
-            href="https://github.com/lucas429a/File-Manager"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center space-x-2 mt-6 px-6 py-3 bg-gray-900 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors"
-          >
-            <FaGithub size={20} />
-            <span>{language === 'pt' ? 'Ver código no GitHub' : 'View code on GitHub'}</span>
-          </a>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`
-                  flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-300
-                  ${activeTab === tab.id 
-                    ? 'bg-brand-primary text-white shadow-lg' 
-                    : 'bg-white dark:bg-gray-700 text-gray-medium dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
-                  }
-                `}
-              >
-                <Icon size={18} />
-                <span>{tab.label}</span>
-                {tab.isWip && (
-                  <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
-                )}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Tab Content */}
-        <div className="min-h-100">
-          {renderTabContent()}
-        </div>
-
-        {/* API Endpoints List */}
-        {/* <div className="mt-12">
-          <h4 className="text-lg font-semibold text-gray-dark dark:text-white mb-6 text-center">
+        {/* Endpoints */}
+        <div className="mt-12 max-w-2xl mx-auto" data-reveal>
+          <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 mb-4 text-center">
             {t.fileManager.endpoints}
           </h4>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {endpoints.map((endpoint) => (
-              <div 
-                key={endpoint.id} 
-                className="bg-white dark:bg-gray-700 rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow"
-              >
-                <div className="flex items-center space-x-2 mb-2">
-                  <span className={`
-                    px-2 py-1 text-xs font-bold rounded
-                    ${endpoint.method === 'GET' ? 'bg-green-100 text-green-700' : ''}
-                    ${endpoint.method === 'POST' ? 'bg-blue-100 text-blue-700' : ''}
-                    ${endpoint.method === 'DELETE' ? 'bg-red-100 text-red-700' : ''}
-                    ${endpoint.method === 'GET/POST' ? 'bg-purple-100 text-purple-700' : ''}
-                  `}>
-                    {endpoint.method}
-                  </span>
-                  <code className="text-sm text-gray-dark dark:text-gray-200 font-mono">{endpoint.path}</code>
-                </div>
-                <p className="text-sm text-gray-medium dark:text-gray-300 mb-2">{endpoint.description}</p>
-                <div className="flex flex-wrap gap-1">
-                  {endpoint.features.map((feature) => (
-                    <span 
-                      key={feature}
-                      className="text-xs bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-200 px-2 py-1 rounded"
-                    >
-                      {feature}
-                    </span>
-                  ))}
-                </div>
+          <div className="space-y-2">
+            {endpoints.map(ep => (
+              <div key={ep.path} className="flex items-center gap-4 p-4 rounded-xl bg-neutral-900 dark:bg-neutral-900 dark:border dark:border-neutral-700 font-mono text-sm">
+                <span className="font-bold text-white bg-white/20 px-2.5 py-1 rounded">{ep.method}</span>
+                <span className="text-neutral-300">{ep.path}</span>
               </div>
             ))}
           </div>
-        </div> */}
+        </div>
       </div>
     </section>
   );
